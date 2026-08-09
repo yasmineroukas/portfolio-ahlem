@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahlem Lina Laguel — Ingénieure en Électrotechnique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e141c;
+    --bg-elev:#151d27;
+    --bg-elev-2:#1b2530;
+    --line:#28333f;
+    --line-soft:#1e2833;
+    --text:#eaeef2;
+    --text-mute:#8b97a6;
+    --text-dim:#5c6a79;
+    --copper:#e3924b;
+    --copper-dim:rgba(227,146,75,.14);
+    --cyan:#5fd4c4;
+    --cyan-dim:rgba(95,212,196,.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--copper-dim);color:var(--copper);}
+
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- background grid texture ---------- */
+  .grid-bg{
+    position:fixed;inset:0;z-index:-2;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:.35;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(14,20,28,.78);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;letter-spacing:.08em;
+    color:var(--text-mute);
+    display:flex;align-items:center;gap:8px;
+  }
+  .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+  .nav-links{display:flex;gap:28px;font-size:13px;}
+  .nav-links a{
+    color:var(--text-mute);
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.02em;
+    transition:color .2s;
+    position:relative;
+  }
+  .nav-links a:hover{color:var(--copper);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--bg-elev);
+      border-bottom:1px solid var(--line-soft);
+      flex-direction:column;padding:20px 32px;gap:16px;
+      transform:translateY(-140%);
+      transition:transform .3s ease;
+    }
+    .nav-links.open{transform:translateY(0);}
+    .nav-toggle{
+      display:block;background:none;border:1px solid var(--line);
+      color:var(--text);width:36px;height:36px;border-radius:4px;
+      font-family:'IBM Plex Mono',monospace;
+    }
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    position:relative;
+    padding-top:64px;
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.14em;
+    color:var(--copper);text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--copper);}
+  h1.name{
+    font-size:clamp(40px,7vw,76px);
+    font-weight:700;
+    line-height:1.02;
+    margin-bottom:20px;
+  }
+  .role{
+    font-size:clamp(17px,2.4vw,22px);
+    color:var(--text-mute);
+    max-width:640px;
+    margin-bottom:36px;
+    font-weight:400;
+  }
+  .role strong{color:var(--text);font-weight:500;}
+
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:56px;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;padding:12px 22px;border-radius:3px;
+    border:1px solid var(--line);
+    transition:all .2s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn.primary{background:var(--copper);color:#171008;border-color:var(--copper);font-weight:500;}
+  .btn.primary:hover{background:#f0a664;}
+  .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .hero-meta{
+    display:flex;gap:40px;flex-wrap:wrap;
+    padding-top:28px;border-top:1px solid var(--line-soft);
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-dim);
+  }
+  .hero-meta span{color:var(--text-mute);}
+
+  /* animated waveform */
+  .wave-wrap{
+    position:absolute;right:0;bottom:0;left:0;
+    height:180px;z-index:1;opacity:.55;
+    mask-image:linear-gradient(to top, black 0%, transparent 100%);
+    pointer-events:none;
+  }
+  .wave-wrap svg{width:100%;height:100%;}
+  .wave-path{
+    fill:none;stroke:var(--cyan);stroke-width:1.4;
+    stroke-dasharray:6 4000;
+    animation:draw 7s linear infinite;
+  }
+  @keyframes draw{
+    0%{stroke-dashoffset:4000;}
+    100%{stroke-dashoffset:0;}
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:120px 0;border-top:1px solid var(--line-soft);position:relative;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:56px;}
+  .sec-num{font-family:'IBM Plex Mono',monospace;color:var(--copper);font-size:13px;}
+  .sec-title{font-size:clamp(24px,3.4vw,32px);font-weight:600;}
+  .sec-line{flex:1;height:1px;background:var(--line);}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- profil ---------- */
+  #profil p{
+    font-size:18px;color:var(--text-mute);max-width:760px;
+    font-weight:400;
+  }
+  #profil p strong{color:var(--text);font-weight:500;}
+
+  /* ---------- experience: schéma unifilaire ---------- */
+  .schema{position:relative;padding-left:0;}
+  .schema::before{
+    content:"";position:absolute;left:17px;top:8px;bottom:8px;width:1px;
+    background:linear-gradient(var(--copper), var(--line) 15%, var(--line) 85%, transparent);
+  }
+  .node{position:relative;padding-left:56px;margin-bottom:52px;}
+  .node:last-child{margin-bottom:0;}
+  .node-marker{
+    position:absolute;left:0;top:2px;
+    width:36px;height:36px;
+    border:1px solid var(--line);
+    background:var(--bg-elev);
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate(45deg);
+    transition:border-color .3s, background .3s;
+  }
+  .node.in .node-marker{border-color:var(--copper);background:var(--copper-dim);}
+  .node-marker span{transform:rotate(-45deg);width:8px;height:8px;background:var(--text-dim);}
+  .node.in .node-marker span{background:var(--copper);}
+  .node-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;margin-bottom:8px;
+  }
+  .node-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;}
+  .node-date{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--copper);
+    padding:2px 8px;border:1px solid var(--copper-dim);border-radius:2px;
+  }
+  .node-org{color:var(--text-mute);font-size:14px;margin-bottom:14px;font-family:'IBM Plex Mono',monospace;}
+  .node ul{list-style:none;}
+  .node li{
+    position:relative;padding-left:18px;color:var(--text-mute);font-size:15px;margin-bottom:6px;
+  }
+  .node li::before{content:"—";position:absolute;left:0;color:var(--text-dim);}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media (max-width:760px){.proj-grid{grid-template-columns:1fr;}}
+  .proj-card{
+    background:var(--bg-elev);
+    border:1px solid var(--line-soft);
+    padding:32px;border-radius:4px;
+    transition:border-color .25s, transform .25s;
+  }
+  .proj-card:hover{border-color:var(--cyan-dim);transform:translateY(-3px);}
+  .proj-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
+    color:var(--cyan);text-transform:uppercase;margin-bottom:14px;display:block;
+  }
+  .proj-card h3{font-size:19px;margin-bottom:10px;line-height:1.35;}
+  .proj-card p{color:var(--text-mute);font-size:14.5px;margin-bottom:8px;}
+  .proj-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-dim);margin-top:16px;display:block;}
+
+  /* ---------- formation ---------- */
+  .edu-item{
+    display:grid;grid-template-columns:120px 1fr;gap:24px;
+    padding:22px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .edu-item:last-child{border-bottom:none;}
+  .edu-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--copper);}
+  .edu-item h3{font-size:16.5px;font-weight:600;margin-bottom:4px;}
+  .edu-item p{color:var(--text-mute);font-size:14px;}
+  .edu-note{color:var(--text-dim);font-size:13.5px;margin-top:10px;line-height:1.7;}
+
+  /* ---------- skills ---------- */
+  .skill-panel{
+    background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:4px;
+    overflow:hidden;
+  }
+  .skill-row{
+    display:grid;grid-template-columns:220px 1fr;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .skill-row:last-child{border-bottom:none;}
+  .skill-label{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-dim);
+    padding:18px 20px;border-right:1px solid var(--line-soft);
+    display:flex;align-items:center;letter-spacing:.02em;
+  }
+  .skill-tags{padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px;align-content:center;}
+  .tag{
+    font-size:13px;padding:5px 12px;border:1px solid var(--line);border-radius:20px;
+    color:var(--text-mute);transition:all .2s;
+  }
+  .tag:hover{border-color:var(--copper);color:var(--copper);}
+  @media (max-width:640px){
+    .skill-row{grid-template-columns:1fr;}
+    .skill-label{border-right:none;border-bottom:1px solid var(--line-soft);padding-bottom:10px;}
+  }
+
+  /* ---------- languages ---------- */
+  .lang-grid{display:flex;gap:48px;flex-wrap:wrap;}
+  .lang-item{min-width:180px;}
+  .lang-item h3{font-size:15px;margin-bottom:10px;font-weight:600;}
+  .bar{height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden;}
+  .bar span{display:block;height:100%;background:var(--cyan);border-radius:2px;}
+  .lang-level{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;}
+
+  /* ---------- contact / footer ---------- */
+  footer{
+    padding:100px 0 50px;
+    border-top:1px solid var(--line-soft);
+    text-align:center;
+  }
+  footer .sec-title{font-size:clamp(28px,5vw,44px);margin-bottom:20px;}
+  footer p{color:var(--text-mute);max-width:480px;margin:0 auto 36px;}
+  .contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:60px;}
+  .foot-bottom{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-dim);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .wave-path{animation:none;stroke-dasharray:none;}
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  a:focus-visible, button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> A.LAGUEL — ÉLECTROTECHNIQUE</div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#profil">Profil</a>
+      <a href="#experience">Expérience</a>
+      <a href="#projets">Projets</a>
+      <a href="#formation">Formation</a>
+      <a href="#competences">Compétences</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wave-wrap">
+    <svg viewBox="0 0 1000 180" preserveAspectRatio="none">
+      <path class="wave-path" d="M0,90 C 40,20 80,20 120,90 C 160,160 200,160 240,90 C 280,20 320,20 360,90 C 400,160 440,160 480,90 C 520,20 560,20 600,90 C 640,160 680,160 720,90 C 760,20 800,20 840,90 C 880,160 920,160 960,90 C 980,55 990,55 1000,90"/>
+    </svg>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Ingénierie électrique — Énergie &amp; Environnement</div>
+    <h1 class="name">Ahlem Lina<br>Laguel</h1>
+    <p class="role">Ingénieure d'État en <strong>Électrotechnique</strong> et titulaire d'un <strong>Master</strong> (ESSA Tlemcen). Cinq stages en milieu industriel et deux projets de fin d'études autour des <strong>nanogénérateurs triboélectriques</strong> — à la recherche d'opportunités en génie électrique.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="mailto:Ahlemlaguel3@gmail.com">Me contacter →</a>
+      <a class="btn ghost" href="#experience">Voir le parcours</a>
+    </div>
+    <div class="hero-meta">
+      <div><span>Localisation</span> · El Kala, El Tarf, Algérie</div>
+      <div><span>Téléphone</span> · 0778 58 19 79</div>
+      <div><span>Langues</span> · Français · Arabe · Anglais</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="profil">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Profil</h2><div class="sec-line"></div></div>
+      <div class="reveal">
+        <p>Ingénieure diplômée en <strong>Électrotechnique</strong> (option Énergie et Environnement) et titulaire d'un <strong>Master</strong> de l'École Supérieure en Sciences Appliquées de Tlemcen. Compétences solides en systèmes électriques, électronique de puissance et énergies renouvelables, développées à travers <strong>cinq stages pratiques</strong> en milieu industriel et <strong>deux projets de fin d'études</strong> portant sur la conception de nanogénérateurs triboélectriques. Rigoureuse, autonome et dotée d'un fort esprit d'équipe, à la recherche d'opportunités pour contribuer à des projets innovants en génie électrique.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Expérience professionnelle</h2><div class="sec-line"></div></div>
+
+      <div class="schema reveal">
+
+        <div class="node">
+          <div class="node-marker"><span></span></div>
+          <div class="node-head">
+            <span class="node-title">Étude des installations électriques industrielles</span>
+            <span class="node-date">Mars 2026</span>
+          </div>
+          <div class="node-org">SARL Panneaux d'Algérie — El Tarf, Algérie</div>
+          <ul>
+            <li>Contribution au suivi de la chaîne de production</li>
+            <li>Étude des installations électriques industrielles</li>
+            <li>Analyse des équipements de commande et de maintenance</li>
+          </ul>
+        </div>
+
+        <div class="node">
+          <div class="node-marker"><span></span></div>
+          <div class="node-head">
+            <span class="node-title">Centrale de production électrique Koudiet Eddraouch</span>
+            <span class="node-date">Janvier 2026</span>
+          </div>
+          <div class="node-org">Sonelgaz — Algérie</div>
+          <ul>
+            <li>Étude du fonctionnement d'une centrale à cycle combiné (1 200 MW)</li>
+            <li>Analyse du processus de production d'énergie électrique</li>
+            <li>Étude de la synchronisation au réseau et des systèmes d'alimentation</li>
+          </ul>
+        </div>
+
+        <div class="node">
+          <div class="node-marker"><span></span></div>
+          <div class="node-head">
+            <span class="node-title">Service maintenance</span>
+            <span class="node-date">Mars 2025</span>
+          </div>
+          <div class="node-org">Biolux (Groupe Beko + Maxwell) — Algérie</div>
+          <ul>
+            <li>Étude des installations électriques industrielles</li>
+            <li>Diagnostic des défauts d'armoires électriques et câblage de commande</li>
+            <li>Suivi de la chaîne de production des climatiseurs</li>
+            <li>Analyse des systèmes de mise à la terre</li>
+          </ul>
+        </div>
+
+        <div class="node">
+          <div class="node-marker"><span></span></div>
+          <div class="node-head">
+            <span class="node-title">Étude technique des postes de distribution</span>
+            <span class="node-date">Janvier 2025</span>
+          </div>
+          <div class="node-org">EDIEL — Alger, Algérie</div>
+          <ul>
+            <li>Étude technique des cellules de protection des postes de distribution</li>
+            <li>Élaboration des schémas unifilaires des cellules et armoires électriques</li>
+          </ul>
+        </div>
+
+        <div class="node">
+          <div class="node-marker"><span></span></div>
+          <div class="node-head">
+            <span class="node-title">Service électrique industriel</span>
+            <span class="node-date">Mars 2024</span>
+          </div>
+          <div class="node-org">Complexe sidérurgique Sider El Hadjar — Annaba, Algérie</div>
+          <ul>
+            <li>Participation aux activités du service électrique industriel</li>
+            <li>Étude des transformateurs, appareillages et armoires électriques</li>
+            <li>Analyse des moteurs industriels</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="projets">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Projets académiques</h2><div class="sec-line"></div></div>
+
+      <div class="proj-grid reveal">
+        <div class="proj-card">
+          <span class="proj-tag">PFE Ingénieur</span>
+          <h3>Nanogénérateur triboélectrique entraîné par une éolienne</h3>
+          <p>Solution de récupération de l'énergie éolienne et de frottement basée sur un TENG entraîné par une éolienne d'Archimède.</p>
+          <p>Conception du système, prototypage et simulation sous MATLAB/Simulink, puis validation expérimentale des performances et du stockage d'énergie.</p>
+          <span class="proj-date mono">ESSA Tlemcen — Juin 2026</span>
+        </div>
+        <div class="proj-card">
+          <span class="proj-tag">PFE Master</span>
+          <h3>Paramètres influençant le fonctionnement d'un nano-générateur triboélectrique</h3>
+          <p>Étude expérimentale et optimisation d'un TENG à travers la conception de plusieurs prototypes.</p>
+          <p>Analyse des paramètres de fonctionnement et évaluation comparative des performances pour améliorer la récupération d'énergie.</p>
+          <span class="proj-date mono">ESSA Tlemcen — Juin 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="formation">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Formation</h2><div class="sec-line"></div></div>
+
+      <div class="reveal">
+        <div class="edu-item">
+          <span class="edu-date">2023 – 2026</span>
+          <div>
+            <h3>Diplôme d'Ingénieur d'État en Électrotechnique — option Énergie et Environnement</h3>
+            <p>École Supérieure en Sciences Appliquées de Tlemcen, Algérie</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <span class="edu-date">2023 – 2026</span>
+          <div>
+            <h3>Master en Électrotechnique — option Énergie et Environnement</h3>
+            <p>École Supérieure en Sciences Appliquées de Tlemcen, Algérie</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <span class="edu-date">2021 – 2023</span>
+          <div>
+            <h3>Classes préparatoires intégrées</h3>
+            <p>École Supérieure en Sciences Appliquées de Tlemcen — Concours national d'accès aux grandes écoles d'ingénieurs, 2023</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <span class="edu-date">2021</span>
+          <div>
+            <h3>Baccalauréat, série Mathématiques</h3>
+          </div>
+        </div>
+        <p class="edu-note">Notions approfondies : électrotechnique, machines électriques, commande des machines électriques, électronique de puissance, électronique analogique et numérique, systèmes asservis, systèmes embarqués, énergies renouvelables, réseaux électriques, smartgrid, conversion d'énergie, maintenance et fiabilité des systèmes à énergies renouvelables, appareillages électriques, stockage d'énergie.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="competences">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Compétences techniques</h2><div class="sec-line"></div></div>
+
+      <div class="skill-panel reveal">
+        <div class="skill-row">
+          <div class="skill-label">ÉLECTROTECHNIQUE &amp; ÉNERGIE</div>
+          <div class="skill-tags">
+            <span class="tag">Électricité industrielle</span><span class="tag">Schémas électriques</span>
+            <span class="tag">Dimensionnement d'installations</span><span class="tag">Énergies renouvelables</span>
+            <span class="tag">Machines électriques</span><span class="tag">Appareillages électriques</span>
+            <span class="tag">Stockage d'énergie</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">ÉLECTRONIQUE &amp; PROTOTYPAGE</div>
+          <div class="skill-tags">
+            <span class="tag">Électronique de puissance</span><span class="tag">Conception électronique</span>
+            <span class="tag">Routage de circuits imprimés</span><span class="tag">Prototypage électrique</span>
+            <span class="tag">Systèmes embarqués</span><span class="tag">Commande de systèmes</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">ESSAIS &amp; SIMULATION</div>
+          <div class="skill-tags">
+            <span class="tag">Validation expérimentale</span><span class="tag">Simulation temps réel</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">LANGAGES</div>
+          <div class="skill-tags"><span class="tag">C</span><span class="tag">Python</span></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">LOGICIELS</div>
+          <div class="skill-tags">
+            <span class="tag">MATLAB</span><span class="tag">AutoCAD</span><span class="tag">MS Project</span>
+            <span class="tag">SolidWorks</span><span class="tag">Caneco BT</span><span class="tag">Proteus</span>
+            <span class="tag">PSIM</span><span class="tag">PVsyst</span><span class="tag">HOMER Pro</span>
+            <span class="tag">RETScreen</span><span class="tag">EcoStruxure</span><span class="tag">Arduino IDE</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">BUREAUTIQUE</div>
+          <div class="skill-tags"><span class="tag">Word</span><span class="tag">Excel</span><span class="tag">PowerPoint</span></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">TRANSVERSALES</div>
+          <div class="skill-tags">
+            <span class="tag">Esprit d'équipe</span><span class="tag">Capacité d'adaptation</span>
+            <span class="tag">Organisation du travail</span><span class="tag">Autonomie</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lang-grid reveal" style="margin-top:56px;">
+        <div class="lang-item">
+          <h3>Français</h3>
+          <div class="bar"><span style="width:95%"></span></div>
+          <div class="lang-level">NIVEAU COURANT</div>
+        </div>
+        <div class="lang-item">
+          <h3>Anglais</h3>
+          <div class="bar"><span style="width:80%"></span></div>
+          <div class="lang-level">NIVEAU COURANT</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center;">Restons en contact</div>
+    <h2 class="sec-title">Discutons de votre<br>prochain projet.</h2>
+    <p>Disponible pour des opportunités en génie électrique, énergies renouvelables et électronique de puissance.</p>
+    <div class="contact-links">
+      <a class="btn primary" href="mailto:Ahlemlaguel3@gmail.com">Ahlemlaguel3@gmail.com</a>
+      <a class="btn ghost" href="tel:+213778581979">0778 58 19 79</a>
+    </div>
+    <div class="foot-bottom wrap">
+      <span>© 2026 AHLEM LINA LAGUEL</span>
+      <span>EL KALA, EL TARF — ALGÉRIE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // nav mobile toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
+
+  // timeline node reveal
+  const nodes = document.querySelectorAll('.node');
+  const io2 = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.4});
+  nodes.forEach(n => io2.observe(n));
+</script>
+
+</body>
+</html>
